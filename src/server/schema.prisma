@@ -19,12 +19,12 @@ model User {
 }
 
 model Blink {
-    id          String   @id @default(uuid())
-    name        String
-    shortIntro  String?
-    description String?
-    image       String?
-    publicKey   String?
-    createdAt   DateTime @default(now())
-    userid      String
+    id            String   @id @default(uuid())
+    name          String
+    shortIntro    String?
+    description   String?
+    coverImageUrl String?
+    publicKey     String?
+    createdAt     DateTime @default(now())
+    userid        String
 }

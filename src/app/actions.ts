@@ -7,18 +7,17 @@ import { CreateBlinkController } from "~/interface-controllers/blink/create-blin
 
 export async function CreateBlink(prevstate: unknown, formData: FormData) {
   const { userId } = auth();
-
-  const data = Object.fromEntries(formData.entries());
-
   if (!userId) {
     console.log("UNAUTHORIZED");
     redirect("/");
   }
 
+  const data = Object.fromEntries(formData.entries());
+
+  console.log(data);
+
   try {
     await CreateBlinkController(data, userId);
-    revalidatePath("/");
-    return { success: true, message: "Blink created successfully" };
   } catch (error) {
     return {
       success: false,
@@ -26,4 +25,7 @@ export async function CreateBlink(prevstate: unknown, formData: FormData) {
         "An error happened while creating a todo. The developers have been notified. Please try again later.",
     };
   }
+
+  revalidatePath("/");
+  return { success: true, message: "Blink created successfully" };
 }

@@ -1,10 +1,13 @@
 "use client";
 
+import Image from "next/image";
+import { useState } from "react";
 import { useFormState } from "react-dom";
 import { CreateBlink } from "~/app/actions";
 import { SubmitButton } from "~/components/shared/ActionButtons";
 import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
+import { UploadDropzone } from "~/lib/uploadthing";
 
 const initialState = {
   success: false,
@@ -13,8 +16,9 @@ const initialState = {
 
 export default function CreateBlinkForm() {
   const [formState, formAction] = useFormState(CreateBlink, initialState);
-
-  console.log(formState);
+  const [coverImageUrl, setCoverImageUrl] = useState<string | null | undefined>(
+    "",
+  );
 
   return (
     <>
@@ -38,7 +42,7 @@ export default function CreateBlinkForm() {
             </Label>
             <Input
               id="short intro"
-              name="short intro"
+              name="shortIntro"
               required
               placeholder="Add your emoji"
               className="col-span-3"
@@ -57,7 +61,34 @@ export default function CreateBlinkForm() {
               placeholder="Enter Description"
             />
           </div>
+          <input
+            type="hidden"
+            name="coverImageUrl"
+            value={coverImageUrl ?? undefined}
+          />
         </div>
+        {coverImageUrl ? (
+          <Image
+            src={coverImageUrl}
+            alt="uploaded image"
+            width={1200}
+            height={400}
+            className="h-80 w-full rounded-lg object-contain"
+          />
+        ) : (
+          <UploadDropzone
+            endpoint="imageUploader"
+            onClientUploadComplete={(res) => {
+              setCoverImageUrl(res[0]?.url);
+            }}
+            onUploadProgress={(progress) => {
+              console.log("progress", progress);
+            }}
+            onUploadError={(error: Error) => {
+              console.log("error", error);
+            }}
+          />
+        )}
         <SubmitButton text="Create" />
       </form>
     </>

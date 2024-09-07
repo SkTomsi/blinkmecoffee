@@ -13,6 +13,7 @@ export async function CreateBlinkUseCase(
       shortIntro: input.shortIntro,
       description: input.description,
       userid: userId,
+      coverImageUrl: input.coverImageUrl,
     },
   });
 
